@@ -1,0 +1,160 @@
+/* word-relay.css */
+
+/* ====== 기본 변수 (라이트/다크 자동 대응) ====== */
+:root{
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e5e7eb;
+  --accent: #4f46e5;
+  --accent-2: #22c55e;
+  --shadow: 0 10px 30px rgba(2,6,23,.10);
+}
+
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg: #0b1020;
+    --card: #121735;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --border: #1e293b;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+  }
+}
+
+*{ box-sizing: border-box; }
+html, body { height: 100%; }
+body{
+  margin: 0;
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(79,70,229,.18), transparent 60%) , var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+/* ====== 게임 카드 / 결과 카드 ====== */
+#game, #result{
+  width: min(560px, 100%);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+/* 결과 화면은 처음에 숨김 (JS와 중복 안전장치) */
+#result{ display: none; }
+
+/* 결과가 보일 때 중앙 정렬되도록 */
+#result{
+  display: none;              /* 초기 비표시 */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 220px;
+}
+
+/* ====== 상단 정보 영역 ====== */
+#game > div:first-child{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* 참가자 순서 배지 */
+#order{
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: rgba(79,70,229,.1);
+  color: var(--accent);
+  border: 1px solid rgba(79,70,229,.2);
+  font-weight: 800;
+}
+
+/* 제시어 라인 */
+#game > div:nth-child(2){
+  margin: 8px 0 18px;
+  font-size: 18px;
+}
+#word{
+  display: inline-block;
+  min-width: 8ch;
+  padding: 4px 10px;
+  margin-left: 6px;
+  border-radius: 10px;
+  background: rgba(34,197,94,.12);
+  color: var(--accent-2);
+  border: 1px solid rgba(34,197,94,.25);
+  font-weight: 700;
+}
+
+/* ====== 입력 영역 ====== */
+input[type="text"]{
+  width: 100%;
+  height: 48px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0 14px;
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+  outline: none; /* 기존 최소 스타일 유지 */
+  transition: border-color .18s ease, box-shadow .18s ease, transform .06s ease;
+}
+input[type="text"]:focus{
+  border-color: rgba(79,70,229,.6);
+  box-shadow: 0 0 0 6px rgba(79,70,229,.12);
+}
+
+/* 버튼 */
+button{
+  margin-top: 12px;
+  width: 100%;
+  height: 46px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--accent), #3b36c8);
+  color: white;
+  font-weight: 800;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .18s ease, filter .18s ease;
+  box-shadow: 0 8px 18px rgba(79,70,229,.35);
+}
+button:hover{ filter: brightness(1.03); }
+button:active{ transform: translateY(1px) scale(.995); }
+
+/* ====== 결과 화면 타이포 ====== */
+#result h1, #result H1{
+  margin: 0;
+  font-size: clamp(28px, 5vw, 44px);
+  letter-spacing: .06em;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+/* 결과 하이라이트용 키프레임 (원하면 .pop 클래스 추가해서 사용) */
+@keyframes pop {
+  0%{ transform: scale(.92); opacity: .0; }
+  70%{ transform: scale(1.02); opacity: 1; }
+  100%{ transform: scale(1); }
+}
+.pop{ animation: pop .32s ease-out; }
+
+/* ====== 작은 화면 최적화 ====== */
+@media (max-width: 420px){
+  #game, #result{ padding: 18px; border-radius: 16px; }
+  #game > div:nth-child(2){ font-size: 16px; }
+  input[type="text"]{ height: 44px; }
+  button{ height: 44px; }
+}
